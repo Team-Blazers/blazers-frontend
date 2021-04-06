@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head> 
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <!--
+<script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+   --> 
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../assets/css/login.css">
+    <script type="text/javascript" src="../assets/js/jquery.js"></script>
+    <title>Sign in & Sign up Form</title>
+  </head>
+  <body>
+
+<div class="container" style="border-radius: 30px;box-shadow:  0 2.8px 2.2px rgba(0, 0, 0, 0.034),0 6.7px 5.3px rgba(0, 0, 0, 0.048),0 12.5px 10px rgba(0, 0, 0, 0.06),0 22.3px 17.9px rgba(0, 0, 0, 0.072),0 41.8px 33.4px rgba(0, 0, 0, 0.086),0 100px 80px rgba(0, 0, 0, 0.12);">
+      <div class="forms-container">
+        <div class="signin-signup">
+          <form  method="POST" action="/teacherLogin" class="sign-in-form" id="teacherLogin">
+            <h2 class="title">Sign in</h2>
+            <div class="input-field">
+              <i class="fas fa-user"></i>
+              <input name="email" id="email" type="email" placeholder="Email Address" />
+              <span class="error-message" style="color: red;"></span>
+            </div>
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input name="password" id="password" type="password" placeholder="Password" />
+              <span class="error-message" id="" style="color: red;"></span>
+            </div>
+            <input type="submit" value="Login" class="btn solid" />
+          </form>
+
+
+          <form method="POST" id="sign-up-form" class="sign-up-form"  action="/teacher">
+            <h2 class="title">Sign up</h2>
+            <input name="role" id="role" value="client" type="hidden" class="role"/>
+            <div class="input-field">
+              <i class="fas fa-user"></i>
+              <input type="text" name="first_name" id="FirstName" class="first_name" placeholder="First Name" />
+              <span class="error-message" style="color: red;"></span>
+            </div>
+            <div class="input-field">
+              <i class="fas fa-user"></i>
+              <input type="text" name="last_name" id="LastName" class="last_name" placeholder="Last Name" />
+              <span class="error-message" style="color: red;"></span>
+            </div>
+            <div class="input-field">
+              <i class="fas fa-user"></i>
+              <input id="MobileNo"  name="phone_number" type="tel" placeholder="Mobile Number" class="phone_number">
+              <span class="error-message" style="color: red;"></span>
+            </div>
+            <div class="input-field">
+              <i class="fas fa-envelope"></i>
+              <input type="email" id='email_address' name="register-email" placeholder="Email" class="email"/>
+              <span class="error-message" style="color: red;"></span>
+            </div>
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="passWord" name="register-password" placeholder="Password" class="password1" />
+              <span class="error-message" style="color: red;"></span>
+            </div>
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="confPwd" name="register-conpassword" placeholder="Comfirm Password" class="password2" />
+              <span class="error-message" style="color: red;"></span>
+            </div>
+            <button type="submit" class="btn register-sign" value="Sign up" >SIGN UP</button>
+          </form>
+        </div>
+      </div>
+      <div class="panels-container">
+        <div class="panel left-panel">
+          <div class="content">
+            <h3>New Teacher ?</h3>
+            <p>
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis,
+              ex ratione. Aliquid!
+            </p>
+            <button class="btn transparent signupup" id="sign-up-btn">
+              Sign up
+            </button>
+          </div>
+          <img src="../assets/images/cuate.png" class="image" alt="" />
+        </div>
+        <div class="panel right-panel">
+          <div class="content">
+            <h3>Already A Teacher ?</h3>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
+              laboriosam ad deleniti.
+            </p>
+            <button class="btn transparent signinin" id="sign-in-btn">
+              Sign in
+            </button>
+          </div>
+          <img src="../assets/images/cuate.png" class="image" />
+        </div>
+      </div>
+    </div>
+</body>
+<script type="text/javascript" src="../assets/js/jquery.min.js"></script>
+<script type="text/javascript">
+
+//teacher login
+$('#teacherLogin').on('submit',(e)=>{
+  e.preventDefault();
+  const email = $('#email').val(),
+  password  = $("#password").val();
+  //custom validation..
+  $('.sign-in-form .input-field input').each(function(){
+   if($(this).val() == ""){
+     //get the field name from the attribute..
+      var fieldName = $(this).attr('placeholder');
+      $(this).siblings('.error-message').html(`${fieldName} is required`);
+   }else{
+    $(this).siblings('.error-message').html(``);
+   }
+  });
+  if(email !== "" && password !== ""){
+   $.ajax({
+     url:"/teacherLogin",
+     method:"POST",
+     data:{email,password},
+     success:function(data){
+       console.log(data);
+     }
+   })
+  }
+
+  
+})
+
+
+function distributeValidation(data){
+  $('.sign-up-form .input-field input').each(function(){
+    for (let i = 0; i < data.error.length; i++) {
+      if($(this).attr('placeholder') == data.error[i].fieldName){
+        $(this).siblings('.error-message').html(data.error[i].err)
+      }
+      
+    }
+  });
+  }
+$('#sign-up-form').on('submit',function(e){
+e.preventDefault();  
+  const FormData = {
+    FirstName:$('#FirstName').val(),
+    LastName:$('#LastName').val(),
+    MobileNo:$('#MobileNo').val(),
+    Email:$("#email_address").val(),
+    passWord: $("#passWord").val(),
+    confPwd:$("#confPwd").val()
+  }
+  $.ajax({
+    url:"/teacher",
+    method:"POST",
+    data:FormData,
+    success:function(data){
+      if(data.error){
+        if(data.error.length > 0){
+        distributeValidation(data);
+      }
+      
+    }
+  }
+  })
+
+
+
+})
+
+  $(document).ready(function(){
+    var windowWidth = $(window).width();
+    if(windowWidth < 870){
+      $(".signupup").click(function(){
+        $(".container").css('height' , '150vh');
+      });
+      $(".signinin").click(function(){
+        $(".container").css('height' , '100vh');
+      });
+    }
+  });
+  
+
+  $(window).on("resize", function(event){
+    var windowWidth = $(window).width();
+    if(windowWidth < 870){
+      $(".signupup").click(function(){
+        $(".container").css('height' , '150vh');
+      });
+      $(".signinin").click(function(){
+        $(".container").css('height' , '100vh');
+      });
+    }
+    if(windowWidth > 870){
+      $(".signupup").click(function(){
+        $(".container").css('height' , '100vh');
+      });
+      $(".signinin").click(function(){
+        $(".container").css('height' , '100vh');
+      });
+    }
+  });
+</script>
+<script type="text/javascript">
+const sign_in_btn = document.querySelector("#sign-in-btn");
+const sign_up_btn = document.querySelector("#sign-up-btn");
+const container = document.querySelector(".container");
+
+sign_up_btn.addEventListener("click", () => {
+  container.classList.add("sign-up-mode");
+});
+
+sign_in_btn.addEventListener("click", () => {
+  container.classList.remove("sign-up-mode");
+});
+
+
+</script>
+
+</html>

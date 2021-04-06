@@ -1,0 +1,43 @@
+$('.register-sign').click(function(e){
+    e.preventDefault();
+    var x = [ 
+      $('form.sign-up-form  .first_name')
+     ,$('form.sign-up-form  .phone_number')
+     ,$('form.sign-up-form  .email')
+     ,$('form.sign-up-form  .password1')
+     ,$('form.sign-up-form  .password2')
+     ,$('form.sign-up-form  .last_name')
+     ,$('form.sign-up-form  .csrf_token')
+     ,$('form.sign-up-form  .role') ];
+      $.ajax({
+       url:'auth/register-validator',
+       method:'POST',
+       contentType:'application/json',
+       dataType:'json',
+       // The data Key has to be the the backend Variable
+       data:JSON.stringify({
+        'first_name': x[0].val() , 
+        'phone_number' : x[1].val() ,
+        'email': x[2].val(), 
+        'password1' : x[3].val(), 
+        'password2' : x[4].val(), 
+        'last_name' : x[5].val(),
+        'csrf_token': x[6].val(),
+        'role':x[7].val() }),
+       success:function(data){
+          $('.error-message').html('');
+          if( typeof data === 'object'){
+            console.log(Object.keys(data));
+            for ( i=0; i<Object.keys(data).length; i++){
+              $('form.sign-up-form  .'+Object.keys(data)[i]+'').next('.error-message').html(data[Object.keys(data)[i]][0]);
+            }
+          }
+          else {
+          
+          }
+        }
+      });
+  });
+
+
+

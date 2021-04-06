@@ -1,0 +1,20 @@
+{
+    "name": "easylearn",
+    "version": "1.0.0",
+    "description": "A web application that makes learning accessible to africans",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "author": "Team Blazers",
+    "license": "MIT",
+    "private": "true",
+    "dependencies": {
+        "bcrypt": "^5.0.0",
+        "body-parser": "^1.19.0",
+        "cors": "^2.8.5",
+        "ejs": "^3.1.3",
+        "express": "^4.17.1",
+        "mongoose": "^5.12.2"
+    }
+}
